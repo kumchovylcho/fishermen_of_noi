@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Edit Chepare
+{% endblock %}
+
+{% block content %}
+    <div class="outer-wrapper">
+        <div class="inner-wrapper">
+            <form method="post" action="{% url 'edit_braid' pk=chepare.pk %}">
+                {{ form.as_div }}
+                {% csrf_token %}
+                <button class="delete-button">Промени</button>
+            </form>
+            <div class="edit-braid-move-down">
+                <a href="{% url 'chepare_details' pk=chepare.pk %}">
+                    <button class="go-back-reel-btn">Назад</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

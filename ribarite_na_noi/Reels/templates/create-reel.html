@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Create Reel
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="outer-wrapper">
+        <div class="inner-wrapper">
+            <form action="{% url 'create_reel' %}" method="post">
+                {{ form.as_p }}
+                {% csrf_token %}
+                <button class="add-button">Добави</button>
+            </form>
+        </div>
+
+    </div>
+
+
+{% endblock %}

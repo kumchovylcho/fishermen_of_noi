@@ -1,0 +1,11 @@
+.info-box {
+    border-style: wave;
+    background-color: lightgreen;
+    width: fit-content;
+    margin: auto;
+}
+
+h1 {
+    font-weight: bolder;
+    color: darkmagenta;
+}

@@ -1,0 +1,13 @@
+.welcome-message {
+    font-family: "Malgun Gothic Semilight", sans-serif;
+    font-size: 25px;
+    font-weight: bolder;
+    background-color: rgba(204,255,255,.5);
+    border: 3px solid;
+    box-shadow: 3px 3px;
+    border-radius: 5px;
+    width: 50%;
+    margin: auto;
+    margin-top: 400px;
+    text-align: center;
+}

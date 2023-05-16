@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ rod.name }}
+{% endblock %}
+
+
+{% block content %}
+
+    <section class="section-outline">
+        <div class="inline-details">
+            {% if not rod.image %}
+                <img src="https://images.askari-sport.com/en/product/1/detail/kogha-fishing-rod-viper-laketrout-1681396862.jpg"
+                     alt="Въдица">
+            {% else %}
+                <img src="{{ rod.image }}"
+                     alt="Въдица">
+            {% endif %}
+            <br>
+            <p>Име на въдица: {{ rod.rod_name|upper }} </p>
+            <p>Модел: {{ rod.rod_type|capfirst }} </p>
+            <p>Дължина: {{ rod.length|floatformat:2 }}м</p>
+            <p>Акция: {{ rod.action }} грама </p>
+            <p>Цвят: {{ rod.color|capfirst }} </p>
+            <p>Цена: {{ rod.price|floatformat:2 }} лв.</p>
+            <br>
+            <h3>Добавено от: {{ rod.created_by.username|capfirst }}</h3>
+            <p>Добавено на: {{ rod.created_on }}</p>
+            <p>Променено на: {{ rod.updated_on }}</p>
+
+            {% if user.pk == rod.created_by.pk %}
+
+                <a href="{% url 'edit_rod' pk=rod.pk %}">
+                    <button class="add-button">Промяна</button>
+                </a>
+                <a href="{% url 'delete_rod' pk=rod.pk %}">
+                    <button class="delete-button">Изтрий</button>
+                </a>
+            {% endif %}
+
+            <a href="{% url 'display_rods' %}">
+                <button class="add-button">Назад</button>
+            </a>
+        </div>
+
+    </section>
+
+
+
+
+
+{% endblock %}

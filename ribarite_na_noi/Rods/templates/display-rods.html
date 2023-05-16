@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Rods
+{% endblock %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+        <div class="rod-position">
+            <a href="{% url 'create_rod' %}">
+                <button class="add-button">Добави Въдица</button>
+            </a>
+        </div>
+    {% endif %}
+
+
+    <form method="get">
+        <div class="sort-data">
+            {{ sort_form.as_div }}
+            <button type="submit" class="sort-button">Сортирай</button>
+        </div>
+        <div class="sort-data">
+            {{ filters.as_div }}
+            <button type="submit" class="sort-button">Филтрирай</button>
+            <a href="{% url 'display_rods' %}">
+                <button class="sort-button" name="clear_filters">Изчисти филтрите</button>
+            </a>
+        </div>
+    </form>
+
+
+    <div class="container mx-auto mt-4">
+        <div class="row">
+            {% if object_list %}
+                {% for rod in object_list %}
+                    <div class="col-md-4">
+                        <div class="card" style="width: 18rem;">
+                            {% if not rod.image %}
+                                <img src="https://images.askari-sport.com/en/product/1/detail/kogha-fishing-rod-viper-laketrout-1681396862.jpg"
+                                     class="card-img-top" alt="въдица">
+
+                            {% else %}
+                                <img src="{{ rod.image }}" class="card-img-top" alt="въдица">
+
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">Тип: {{ rod.rod_type }}</h5>
+                                <h6 class="card-subtitle mb-2">Дължина: {{ rod.length|floatformat:2 }}м</h6>
+                                <h6 class="card-text">Модел: {{ rod.rod_name|upper }}</h6>
+                                <h6 class="card-text">Цена: {{ rod.price|floatformat:2 }} лв.</h6>
+                                <h6 class="card-text">Акция: {{ rod.action }} гр.</h6>
+                                <p class="card-text">Добавено от: {{ rod.created_by.username|capfirst }}</p>
+                                <a href="{% url 'rod_details' pk=rod.pk %}">
+                                    <button class="add-button">Детайли</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% elif not object_list %}
+                {% if user.is_authenticated and all_rods %}
+                    <h1 class="empty-item-message">Няма такава въдица.</h1>
+
+                {% elif user.is_authenticated %}
+                    <h1 class="empty-item-message">Няма добавени въдици.</h1>
+
+                {% else %}
+                    <h1 class="empty-item-message">Няма добавени въдици.За да добавите въдица, моля да се регистрирате
+                        или да влезете в профила си.</h1>
+
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Reels
+{% endblock %}
+
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+        <div class="rod-position">
+            <a href="{% url 'create_reel' %}">
+                <button class="add-button">Добави Макара</button>
+            </a>
+        </div>
+    {% endif %}
+
+    <form method="get">
+        <div class="sort-data">
+            {{ sort_form.as_div }}
+            <button type="submit" class="sort-button">Сортирай</button>
+        </div>
+        <div class="sort-data">
+            {{ filters.as_div }}
+            <button type="submit" class="sort-button">Филтрирай</button>
+            <a href="{% url 'display_reels' %}">
+                <button class="sort-button" name="clear_filters">Изчисти филтрите</button>
+            </a>
+        </div>
+    </form>
+
+
+    <div class="container mx-auto mt-4">
+        <div class="row">
+            {% if object_list %}
+                {% for reel in object_list %}
+                    <div class="col-md-4">
+                        <div class="card" style="width: 18rem;">
+                            {% if not reel.image %}
+                                <img src="https://promixfishing.com/wp-content/uploads/2019/09/1-155.jpg"
+                                     class="card-img-top" alt="макара">
+
+                            {% else %}
+                                <img src="{{ reel.image }}" class="card-img-top" alt="макара">
+
+                            {% endif %}
+                            <div class="card-body">
+                                <p class="card-text">Модел: {{ reel.model|upper|truncatechars:15 }} </p>
+                                <h5 class="card-title">Размер: {{ reel.size }}</h5>
+                                <h6 class="card-subtitle mb-2">Предавателно число: {{ reel.gear_ratio }}</h6>
+                                <h6 class="card-subtitle mb-2">Цена: {{ reel.price|floatformat:2 }} лв.</h6>
+                                <h6 class="card-text">Добавено от: {{ reel.created_by.username|capfirst }}</h6>
+                                <a href="{% url 'reel_details' pk=reel.pk %}">
+                                    <button class="add-button">Детайли</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% elif not object_list %}
+                {% if user.is_authenticated and all_reels %}
+                    <h1 class="empty-item-message">Няма такава макара.</h1>
+
+                {% elif user.is_authenticated %}
+                    <h1 class="empty-item-message">Няма добавени макари.</h1>
+
+                {% else %}
+                    <h1 class="empty-item-message">Няма добавени макари.За да добавите макара, моля да се регистрирате
+                        или да влезете в профила си.</h1>
+
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+
+{% endblock %}

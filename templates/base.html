@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+
+</head>
+<body>
+    <header>
+        <nav>
+            <h1 class="home"><a href="{% url 'home' %}">Home</a></h1>
+            <ul>
+                <li><a href="{% url 'display_rods' %}">Въдици</a></li>
+                <li><a href="{% url 'display_reels' %}">Макари</a></li>
+                <li><a href="{% url 'display_braids' %}">Влакна</a></li>
+                <li><a href="{% url 'display_chepareta' %}">Чепарета</a></li>
+                <li><a href="{% url 'home' %}">Олова</a></li>
+
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'logout' %}">Sign Out</a></li>
+                <li><a href="#">Profile</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Sign in</a></li>
+                <li><a href="{% url 'register' %}">Sign up</a></li>
+
+            {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    {% block content %}
+    {% endblock %}
+
+    <br><br><br><br>
+    <footer>
+        <a href="https://www.facebook.com/groups/643789872697112" >Fishermen group <i class="fab fa-facebook"></i></a>
+    </footer>
+
+</body>
+</html>

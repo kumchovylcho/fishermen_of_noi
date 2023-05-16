@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ reel.model }}
+{% endblock %}
+
+
+{% block content %}
+
+    <section class="section-outline">
+        <div class="inline-details">
+            {% if not reel.image %}
+                <img src="https://promixfishing.com/wp-content/uploads/2019/09/1-155.jpg"
+                     alt="Макара">
+            {% else %}
+                <img src="{{ reel.image }}"
+                     alt="Макара">
+            {% endif %}
+            <br>
+            <p>Размер: {{ reel.size }} </p>
+            <p>Модел: {{ reel.model|upper }} </p>
+            <p>Предавателно число: {{ reel.gear_ratio }}</p>
+            <p>Тегло: {{ reel.weight }} грама </p>
+            <p>Лагери: {{ reel.bearings }} броя </p>
+            <p>Цена: {{ reel.price|floatformat:2 }} лв.</p>
+            <br>
+            <h3>Добавено от: {{ reel.created_by.username|capfirst }}</h3>
+            <p>Добавено на: {{ reel.created_on }}</p>
+            <p>Променено на: {{ reel.updated_on }}</p>
+
+            {% if user.pk == reel.created_by.pk %}
+
+                <a href="{% url 'edit_reel' pk=reel.pk %}">
+                    <button class="add-button">Промяна</button>
+                </a>
+                <a href="{% url 'delete_reel' pk=reel.pk %}">
+                    <button class="delete-button">Изтрий</button>
+                </a>
+            {% endif %}
+
+            <a href="{% url 'display_reels' %}">
+                <button class="add-button">Назад</button>
+            </a>
+        </div>
+
+    </section>
+
+
+{% endblock %}

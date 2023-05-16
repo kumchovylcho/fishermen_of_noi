@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ chepare.type }}
+{% endblock %}
+
+
+{% block content %}
+
+    <section class="section-outline">
+        <div class="inline-details">
+            {% if not chepare.image %}
+                <img src="https://filstar.com/data/uploads/products/C_953700_953701_cover_1-20220217111047-341.jpg"
+                     alt="Влакно">
+            {% else %}
+                <img src="{{ chepare.image }}"
+                     alt="Влакно">
+            {% endif %}
+            <br>
+            <p>Модел: {{ braid.name|upper }} </p>
+            <p>Дебелина: {{ braid.thickness }}</p>
+            <p>Издръжливост: {{ braid.strength }} </p>
+            <p>Цена: {{ braid.price|floatformat:2 }}лв.</p>
+            {% if braid.is_colored %}
+                <p>Шарено: Да </p>
+            {% else %}
+                <p>Шарено: Не </p>
+            {% endif %}
+            <br>
+            <h3>Добавено от: {{ chepare.created_by.username|capfirst }}</h3>
+            <p>Добавено на: {{ chepare.created_on }}</p>
+            <p>Променено на: {{ chepare.updated_on }}</p>
+
+            {% if user.pk == chepare.created_by.pk %}
+                <a href="{% url 'edit_chepare' pk=chepare.pk %}">
+                    <button class="add-button">Промяна</button>
+                </a>
+                <a href="{% url 'delete_chepare' pk=chepare.pk %}">
+                    <button class="delete-button">Изтрий</button>
+                </a>
+            {% endif %}
+
+            <a href="{% url 'display_chepareta' %}">
+                <button class="add-button">Назад</button>
+            </a>
+        </div>
+
+    </section>
+
+
+{% endblock %}

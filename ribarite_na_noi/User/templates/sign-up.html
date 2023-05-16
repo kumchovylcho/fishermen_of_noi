@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+
+{% block content %}
+
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <div class="container">
+
+        <form class="form-signin" method="post" action="{% url 'register' %}">
+            <h1 class="form-signin-heading">Sign up</h1>
+                {{ form.as_p }}
+                {% csrf_token %}
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">
+                Sign up
+            </button>
+        </form>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,155 @@
+@import url(navigation.css);
+@import url(home-page.css);
+@import url(footer.css);
+@import url(login_and_register.css);
+@import url(welcome-page.css);
+@import url(display-rods.css);
+
+
+.inner-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    width: 800px;
+    height: auto;
+    background-color: rgba(180, 240, 180, 0.5);
+}
+
+.outer-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.outer-wrapper .inner-wrapper form {
+    display: flex;
+    flex-direction: column;
+}
+
+.outer-wrapper .inner-wrapper form div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.outer-wrapper .inner-wrapper form div select {
+    margin-right: 66px;
+}
+
+.outer-wrapper .inner-wrapper form div input {
+    margin-left: 24px;
+}
+
+.inner-wrapper label {
+    font-weight: bolder;
+    color: rgb(11, 19, 82);
+    text-decoration: none;
+}
+
+.add-button,
+.delete-button,
+.go-back-from-delete {
+    border: 2px solid palegoldenrod;
+    background-color: #e2c8c8;
+    font-weight: bolder;
+    font-size: x-large;
+    margin-top: 26px;
+}
+
+.add-button:hover,
+.go-back-btn:hover,
+.center-del-button .go-back-from-delete:hover,
+.go-back-reel-btn:hover {
+    color: #0cc795;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    cursor: pointer;
+    background-color: #ce1d1d;
+}
+
+.empty-item-message {
+    margin: auto;
+    border: 3px solid papayawhip;
+    background-color: papayawhip;
+    color: #dd2476;
+    font-weight: bolder;
+}
+
+.section-outline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 600px;
+    background-color: rgb(210, 200, 180, 0.6);
+    color: #1e1e08;
+    margin: auto;
+    font-weight: bolder;
+    margin-top: 50px;
+}
+
+.section-outline .inline-details h3 {
+    font-weight: bold;
+    color: #ce1d1d;
+}
+
+.section-outline .inline-details img {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    margin: auto;
+}
+
+.sort-data {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 12px auto;
+    font-weight: bolder;
+    background-color: rgb(210, 200, 180, 0.5);
+    font-size: 22px;
+    color: #02103b;
+}
+
+.sort-button {
+    background-color: #7daf41;
+    font-weight: bold;
+    margin-left: 24px;
+
+}
+
+.sort-button:hover {
+    cursor: pointer;
+    background-color: #FF512F;
+}
+
+.move-btn {
+    margin-top: 600px;
+    margin-right: 150px;
+}
+
+.go-back-btn, .go-back-reel-btn {
+    width: 100px;
+    font-weight: bolder;
+    font-size: 24px;
+    margin-left: 10px;
+    background-color: #e2c8c8;
+    border: 2px solid palegoldenrod;
+}
+
+.go-back-btn {
+    margin-top: 370px;
+}
+
+.edit-reel-move-down,
+.edit-braid-move-down {
+    margin-top: 328px;
+}
+
+.center-del-button {
+    text-align: center;
+}

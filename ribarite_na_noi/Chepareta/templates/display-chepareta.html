@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Chepareta
+{% endblock %}
+
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+        <div class="rod-position">
+            <a href="{% url 'create_chepare' %}">
+                <button class="add-button">Добави Чепаре</button>
+            </a>
+        </div>
+    {% endif %}
+
+    <form method="get">
+        <div class="sort-data">
+            {{ sort_form.as_div }}
+            <button type="submit" class="sort-button">Сортирай</button>
+        </div>
+        <div class="sort-data">
+            {{ filters.as_div }}
+            <button type="submit" class="sort-button">Филтрирай</button>
+            <a href="{% url 'display_chepareta' %}">
+                <button class="sort-button" name="clear_filters">Изчисти филтрите</button>
+            </a>
+        </div>
+    </form>
+
+    <div class="container mx-auto mt-4">
+        <div class="row">
+            {% if object_list %}
+                {% for chepare in object_list %}
+                    <div class="col-md-4">
+                        <div class="card" style="width: 18rem;">
+                            {% if not chepare.image %}
+                                <img src="https://filstar.com/data/uploads/products/C_953700_953701_cover_1-20220217111047-341.jpg"
+                                     class="card-img-top" alt="влакно">
+
+                            {% else %}
+                                <img src="{{ chepare.image }}" class="card-img-top" alt="влакно">
+
+                            {% endif %}
+                            <div class="card-body">
+                                <p class="card-text">Модел: {{ chepare.name|upper|truncatechars:10 }} </p>
+                                <h5 class="card-title">Дебелина: {{ chepare.thickness }}</h5>
+                                <h6 class="card-subtitle mb-2">Издръжливост: {{ chepare.strength }}</h6>
+                                <h6 class="card-subtitle mb-2">Цена: {{ chepare.price|floatformat:2 }}лв.</h6>
+
+                                {% if chepare.is_colored %}
+                                    <h6 class="card-subtitle mb-2">Шарено: Да </h6>
+                                {% else %}
+                                    <h6 class="card-subtitle mb-2">Шарено: Не </h6>
+                                {% endif %}
+
+                                <h6 class="card-subtitle mb-2">Дължина: {{ chepare.length }}м. </h6>
+                                <h6 class="card-text">Добавено от: {{ chepare.created_by.username|capfirst }}</h6>
+                                <a href="{% url 'braid_details' pk=chepare.pk %}">
+                                    <button class="add-button">Промяна</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            {% elif not object_list %}
+                {% if user.is_authenticated and all_chepareta %}
+                    <h1 class="empty-item-message">Няма такова чепаре.</h1>
+
+                {% elif user.is_authenticated %}
+                    <h1 class="empty-item-message">Няма добавени чепарета.</h1>
+
+                {% else %}
+                    <h1 class="empty-item-message">Няма добавени чепарета.За да добавите чепаре, моля да се регистрирате
+                        или да влезете в профила си.</h1>
+
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+
+{% endblock %}
