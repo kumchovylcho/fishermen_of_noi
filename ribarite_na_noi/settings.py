@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'ribarite_na_noi.Reels',
     'ribarite_na_noi.Braids',
     'ribarite_na_noi.Chepareta',
+    'ribarite_na_noi.Leads',
 ]
 
 MIDDLEWARE = [
