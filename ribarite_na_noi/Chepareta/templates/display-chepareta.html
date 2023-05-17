@@ -36,7 +36,7 @@
                     <div class="col-md-4">
                         <div class="card" style="width: 18rem;">
                             {% if not chepare.image %}
-                                <img src="https://filstar.com/data/uploads/products/C_953700_953701_cover_1-20220217111047-341.jpg"
+                                <img src="https://cdn1.focus.bg/bazar//1a/original/1a58c968975254c3f449e8e1dcf26ece.jpg"
                                      class="card-img-top" alt="влакно">
 
                             {% else %}
@@ -44,20 +44,15 @@
 
                             {% endif %}
                             <div class="card-body">
-                                <p class="card-text">Модел: {{ chepare.name|upper|truncatechars:10 }} </p>
-                                <h5 class="card-title">Дебелина: {{ chepare.thickness }}</h5>
-                                <h6 class="card-subtitle mb-2">Издръжливост: {{ chepare.strength }}</h6>
+                                <p class="card-text">Тип: {{ chepare.type|upper }} </p>
+                                <h5 class="card-title">Брой куки: {{ chepare.number_of_hooks }}</h5>
+                                <h6 class="card-subtitle mb-2">Номер кука: {{ chepare.hook_number }}</h6>
+                                <h6 class="card-subtitle mb-2">Цвят: {{ chepare.color|upper }}</h6>
+                                <h6 class="card-subtitle mb-2">Майка/бидем: {{ chepare.main_line_thickness|floatformat:2 }} / {{ chepare.semi_main_line_thickness|floatformat:2 }}</h6>
                                 <h6 class="card-subtitle mb-2">Цена: {{ chepare.price|floatformat:2 }}лв.</h6>
 
-                                {% if chepare.is_colored %}
-                                    <h6 class="card-subtitle mb-2">Шарено: Да </h6>
-                                {% else %}
-                                    <h6 class="card-subtitle mb-2">Шарено: Не </h6>
-                                {% endif %}
-
-                                <h6 class="card-subtitle mb-2">Дължина: {{ chepare.length }}м. </h6>
                                 <h6 class="card-text">Добавено от: {{ chepare.created_by.username|capfirst }}</h6>
-                                <a href="{% url 'braid_details' pk=chepare.pk %}">
+                                <a href="{% url 'chepare_details' pk=chepare.pk %}">
                                     <button class="add-button">Промяна</button>
                                 </a>
                             </div>
