@@ -50,7 +50,8 @@
 
 .add-button,
 .delete-button,
-.go-back-from-delete {
+.go-back-from-delete,
+.go-back-chepare-btn {
     border: 2px solid palegoldenrod;
     background-color: #e2c8c8;
     font-weight: bolder;
@@ -61,7 +62,8 @@
 .add-button:hover,
 .go-back-btn:hover,
 .center-del-button .go-back-from-delete:hover,
-.go-back-reel-btn:hover {
+.go-back-reel-btn:hover,
+.go-back-chepare-btn:hover {
     color: #0cc795;
     cursor: pointer;
 }
@@ -132,13 +134,19 @@
     margin-right: 150px;
 }
 
-.go-back-btn, .go-back-reel-btn {
+.go-back-btn,
+.go-back-reel-btn,
+.go-back-chepare-btn {
     width: 100px;
     font-weight: bolder;
     font-size: 24px;
     margin-left: 10px;
     background-color: #e2c8c8;
     border: 2px solid palegoldenrod;
+}
+
+.go-back-chepare-btn {
+    margin-top: 42px;
 }
 
 .go-back-btn {
