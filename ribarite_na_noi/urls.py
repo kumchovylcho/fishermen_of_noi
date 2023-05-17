@@ -9,5 +9,6 @@ urlpatterns = [
     path('reels/', include('ribarite_na_noi.Reels.urls')),
     path('braids/', include('ribarite_na_noi.Braids.urls')),
     path('chepareta/', include('ribarite_na_noi.Chepareta.urls')),
+    path('leads/', include('ribarite_na_noi.Leads.urls')),
 
 ]
