@@ -63,7 +63,8 @@
 .go-back-btn:hover,
 .center-del-button .go-back-from-delete:hover,
 .go-back-reel-btn:hover,
-.go-back-chepare-btn:hover {
+.go-back-chepare-btn:hover,
+.go-back-lead-btn:hover {
     color: #0cc795;
     cursor: pointer;
 }
@@ -136,7 +137,8 @@
 
 .go-back-btn,
 .go-back-reel-btn,
-.go-back-chepare-btn {
+.go-back-chepare-btn,
+.go-back-lead-btn {
     width: 100px;
     font-weight: bolder;
     font-size: 24px;
@@ -151,6 +153,10 @@
 
 .go-back-btn {
     margin-top: 370px;
+}
+
+.go-back-lead-btn {
+    margin-bottom: 130px;
 }
 
 .edit-reel-move-down,
