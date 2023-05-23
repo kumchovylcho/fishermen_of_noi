@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load filters %}
+
+{% block title %}
+    {{ lead.lead_type|capfirst }}
+{% endblock %}
+
+
+{% block content %}
+
+    <section class="section-outline">
+        <div class="inline-details">
+            {% if not lead.image %}
+                <img src="https://www.be-prepared-for-emergencies.co.uk/pics_5-183294/cdn_5-%D0%B1%D1%80-%D0%BE%D0%BB%D0%BE%D0%B2%D0%BE-%D0%BC%D0%B8%D0%B2%D0%BA%D0%B0-%D1%80%D0%B8%D0%B1%D0%BE%D0%BB%D0%BE%D0%B2%D0%BD%D0%B8-%D0%BF%D1%80%D0%B8%D0%BD%D0%B0%D0%B4%D0%BB%D0%B5%D0%B6%D0%BD%D0%BE%D1%81%D1%82%D0%B8.jpeg"
+                     alt="олово">
+            {% else %}
+                <img src="{{ lead.image }}"
+                     alt="олово">
+            {% endif %}
+            <br>
+            <p class="card-text">Форма: {{ lead.lead_type|upper }} </p>
+            <p class="card-title">Тегло: {{ lead.grams }}гр.</p>
+            <p class="card-subtitle mb-2">Цена: {{ lead.price|floatformat:2 }}лв.</p>
+
+            <h3>Добавено от: {{ lead.created_by.username|capfirst }}</h3>
+            <p>Добавено на: {{ lead.created_on }}</p>
+            <p>Променено на: {{ lead.updated_on }}</p>
+
+            {% if user.is_superuser or user|has_group:"staff" or user.pk == lead.created_by.pk %}
+                <a href="{% url 'edit_lead' pk=lead.pk %}">
+                    <button class="add-button">Промяна</button>
+                </a>
+                <a href="{% url 'delete_lead' pk=lead.pk %}">
+                    <button class="delete-button">Изтрий</button>
+                </a>
+            {% endif %}
+
+            <a href="{% url 'display_leads' %}">
+                <button class="add-button">Назад</button>
+            </a>
+        </div>
+
+    </section>
+
+
+{% endblock %}
