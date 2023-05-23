@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load filters %}
 
 {% block title %}
     Rods
@@ -51,15 +52,22 @@
                                 <h6 class="card-text">Цена: {{ rod.price|floatformat:2 }} лв.</h6>
                                 <h6 class="card-text">Акция: {{ rod.action }} гр.</h6>
                                 <p class="card-text">Добавено от: {{ rod.created_by.username|capfirst }}</p>
+
+
                                 <a href="{% url 'rod_details' pk=rod.pk %}">
-                                    <button class="add-button">Детайли</button>
+                                    {% if user.is_superuser or user|has_group:"staff" or user.pk == rod.created_by.pk %}
+                                        <button class="add-button">Промяна</button>
+                                    {% else %}
+                                        <button class="add-button">Детайли</button>
+                                    {% endif %}
                                 </a>
+
                             </div>
                         </div>
                     </div>
                 {% endfor %}
             {% elif not object_list %}
-                {% if user.is_authenticated and all_rods %}
+                {% if all_rods %}
                     <h1 class="empty-item-message">Няма такава въдица.</h1>
 
                 {% elif user.is_authenticated %}

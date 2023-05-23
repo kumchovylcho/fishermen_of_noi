@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load filters %}
 
 {% block title %}
     Reels
@@ -50,15 +51,22 @@
                                 <h6 class="card-subtitle mb-2">Предавателно число: {{ reel.gear_ratio }}</h6>
                                 <h6 class="card-subtitle mb-2">Цена: {{ reel.price|floatformat:2 }} лв.</h6>
                                 <h6 class="card-text">Добавено от: {{ reel.created_by.username|capfirst }}</h6>
+
+
                                 <a href="{% url 'reel_details' pk=reel.pk %}">
-                                    <button class="add-button">Детайли</button>
+                                    {% if user.is_superuser or user|has_group:"staff" or user.pk == reel.created_by.pk %}
+                                        <button class="add-button">Промяна</button>
+                                    {% else %}
+                                        <button class="add-button">Детайли</button>
+                                    {% endif %}
                                 </a>
+
                             </div>
                         </div>
                     </div>
                 {% endfor %}
             {% elif not object_list %}
-                {% if user.is_authenticated and all_reels %}
+                {% if all_reels %}
                     <h1 class="empty-item-message">Няма такава макара.</h1>
 
                 {% elif user.is_authenticated %}
