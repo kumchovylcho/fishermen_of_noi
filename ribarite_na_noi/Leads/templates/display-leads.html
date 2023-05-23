@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load filters %}
+
+{% block title %}
+    Leads
+{% endblock %}
+
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+        <div class="rod-position">
+            <a href="{% url 'create_lead' %}">
+                <button class="add-button">Добави Олово</button>
+            </a>
+        </div>
+    {% endif %}
+
+    <form method="get">
+        <div class="sort-data">
+            {{ sort_form.as_div }}
+            <button type="submit" class="sort-button">Сортирай</button>
+        </div>
+        <div class="sort-data">
+            {{ filters.as_div }}
+            <button type="submit" class="sort-button">Филтрирай</button>
+            <a href="{% url 'display_leads' %}">
+                <button class="sort-button" name="clear_filters">Изчисти филтрите</button>
+            </a>
+        </div>
+    </form>
+
+    <div class="container mx-auto mt-4">
+        <div class="row">
+            {% if object_list %}
+                {% for lead in object_list %}
+                    <div class="col-md-4">
+                        <div class="card" style="width: 18rem;">
+                            {% if not lead.image %}
+                                <img src="https://www.be-prepared-for-emergencies.co.uk/pics_5-183294/cdn_5-%D0%B1%D1%80-%D0%BE%D0%BB%D0%BE%D0%B2%D0%BE-%D0%BC%D0%B8%D0%B2%D0%BA%D0%B0-%D1%80%D0%B8%D0%B1%D0%BE%D0%BB%D0%BE%D0%B2%D0%BD%D0%B8-%D0%BF%D1%80%D0%B8%D0%BD%D0%B0%D0%B4%D0%BB%D0%B5%D0%B6%D0%BD%D0%BE%D1%81%D1%82%D0%B8.jpeg"
+                                     class="card-img-top" alt="олово">
+
+                            {% else %}
+                                <img src="{{ lead.image }}" class="card-img-top" alt="олово">
+
+                            {% endif %}
+                            <div class="card-body">
+                                <p class="card-text">Форма олово: {{ lead.lead_type|upper }} </p>
+                                <h5 class="card-title">Тегло: {{ lead.grams }}гр.</h5>
+                                <h6 class="card-subtitle mb-2">Цена: {{ lead.price|floatformat:2 }}лв.</h6>
+
+                                <h6 class="card-text">Добавено от: {{ lead.created_by.username|capfirst }}</h6>
+
+                                <a href="{% url 'lead_details' pk=lead.pk %}">
+                                    {% if user.is_superuser or user|has_group:"staff" or user.pk == lead.created_by.pk %}
+                                        <button class="add-button">Промяна</button>
+                                    {% else %}
+                                        <button class="add-button">Детайли</button>
+                                    {% endif %}
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            {% elif not object_list %}
+                {% if all_leads %}
+                    <h1 class="empty-item-message">Няма такова олово.</h1>
+
+                {% elif user.is_authenticated %}
+                    <h1 class="empty-item-message">Няма добавени олова.</h1>
+
+                {% else %}
+                    <h1 class="empty-item-message">Няма добавени олова.За да добавите олово, моля да се регистрирате
+                        или да влезете в профила си.</h1>
+
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+
+{% endblock %}

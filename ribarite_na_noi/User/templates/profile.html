@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+
+{% block content %}
+
+    <section class="section-outline">
+        <div class="inline-details">
+
+            <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg"
+                 alt="profile-picture">
+
+            <br>
+            <p class="card-text">Никнейм: {{ user.get_username }} </p>
+            <p class="card-title">Регистрация на: {{ user.date_joined }}</p>
+            <br>
+            <p class="card-title">Добавени предмети: {{ created_items }}</p>
+
+            {% for item_name, added_posts in all_posts.items %}
+                <p class="card-title">{{ item_name }}: {{ added_posts }}</p>
+            {% endfor %}
+
+            <a href="{% url 'change_password' pk=user.pk %}">
+                <button class="delete-button">Смени парола</button>
+            </a>
+
+            <a href="{% url 'change_username' pk=user.pk %}">
+                <button class="delete-button">Смени никнейм</button>
+            </a>
+
+            <a href="{% url 'delete_user' pk=user.pk %}">
+                <button class="delete-button">Изтрий профил</button>
+            </a>
+
+        </div>
+
+    </section>
+
+
+{% endblock %}

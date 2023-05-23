@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Delete Lead
+{% endblock %}
+
+
+{% block content %}
+
+
+    <div>
+        <form method="post" action="{% url 'delete_lead' pk=lead.pk %}">
+            <div class="rod-position">
+                <h2 class="empty-item-message">Сигурен ли си ,че искаш да изтриеш {{ lead.lead_type|upper }} {{ lead.grams }}гр. ?</h2>
+                {% csrf_token %}
+
+                <button class="delete-button">ИЗТРИЙ</button>
+            </div>
+        </form>
+        <div class="center-del-button">
+            <a href="{% url 'lead_details' pk=lead.pk %}">
+                <button class="go-back-from-delete">Назад</button>
+            </a>
+        </div>
+    </div>
+
+
+{% endblock %}

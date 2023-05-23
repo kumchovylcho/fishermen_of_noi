@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Edit Lead
+{% endblock %}
+
+{% block content %}
+    <div class="outer-wrapper">
+        <div class="inner-wrapper">
+            <form method="post" action="{% url 'edit_lead' pk=lead.pk %}">
+                {{ form.as_div }}
+                {% csrf_token %}
+                <button class="delete-button">Промени</button>
+            </form>
+            <div class="edit-braid-move-down">
+                <a href="{% url 'lead_details' pk=lead.pk %}">
+                    <button class="go-back-lead-btn">Назад</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

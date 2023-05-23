@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Create Lead
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="outer-wrapper">
+        <div class="inner-wrapper">
+            <form action="{% url 'create_lead' %}" method="post">
+                {{ form.as_p }}
+                {% csrf_token %}
+                <button class="add-button">Добави</button>
+            </form>
+        </div>
+
+    </div>
+
+
+{% endblock %}

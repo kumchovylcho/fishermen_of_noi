@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Delete
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="rod-position">
+        <h1 class="empty-item-message">{{ delete_user_msg }}</h1>
+        {% if created_items %}
+            <h5 class="empty-item-message">Следните предмети ще бъдат изтрити заедно с твоя профил:</h5>
+            {% for item_name, added_posts in all_posts.items %}
+                <h4 class="empty-item-message">{{ item_name }}: {{ added_posts }}</h4>
+            {% endfor %}
+
+        {% endif %}
+        <form method="post">
+            <a href="{% url 'delete_user' pk=user.pk %}">
+                <button class="delete-button">ИЗТРИЙ ПРОФИЛ</button>
+            </a>
+            {% csrf_token %}
+        </form>
+
+        <div class="center-del-button">
+            <a href="{% url 'profile' pk=user.pk %}">
+                <button class="go-back-from-delete">Назад</button>
+            </a>
+        </div>
+    </div>
+
+{% endblock %}
