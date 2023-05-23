@@ -23,3 +23,22 @@ class RedirectNotLoggedUsers(UserPassesTestMixin):
 
     def handle_no_permission(self):
         return redirect(self.no_permission_redirect_to)
+
+
+class RedirectLoggedUsersUrlTypers(RedirectNotLoggedUsers):
+
+    def test_func(self):
+        is_authenticated = super().test_func()
+
+        item = self.get_object()
+
+        if self.request.user.is_superuser:
+            return True
+
+        if self.request.user.groups.filter(name="staff").exists():
+            return True
+
+        if hasattr(item, 'created_by'):
+            return item.created_by.pk == self.request.user.pk and is_authenticated
+
+        return item.pk == self.request.user.pk and is_authenticated
