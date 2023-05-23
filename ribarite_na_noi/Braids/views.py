@@ -13,7 +13,9 @@ from ribarite_na_noi.Braids.forms import (SortBraidsForm,
                                           FilterBraidsForm,
                                           )
 from ribarite_na_noi.Braids.models import Braid
-from ribarite_na_noi.common.validators import RedirectNotLoggedUsers
+from ribarite_na_noi.common.validators import (RedirectNotLoggedUsers,
+                                               RedirectLoggedUsersUrlTypers,
+                                               )
 
 
 class DisplayBraidsView(ListView):
@@ -87,7 +89,7 @@ class BraidDetailsView(DetailView):
     template_name = 'braid-details.html'
 
 
-class EditBraidView(RedirectNotLoggedUsers, UpdateView):
+class EditBraidView(RedirectLoggedUsersUrlTypers, UpdateView):
     model = Braid
     fields = [field.name for field in model._meta.get_fields()[1:-3]]
 
@@ -98,11 +100,10 @@ class EditBraidView(RedirectNotLoggedUsers, UpdateView):
     no_permission_redirect_to = 'display_braids'
 
 
-class DeleteBraidView(RedirectNotLoggedUsers, DeleteView):
+class DeleteBraidView(RedirectLoggedUsersUrlTypers, DeleteView):
     model = Braid
     template_name = 'delete-braid.html'
     success_url = reverse_lazy('display_braids')
 
     user_must_be_logged = True
     no_permission_redirect_to = 'display_braids'
-

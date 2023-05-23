@@ -13,7 +13,9 @@ from ribarite_na_noi.Rods.forms import (CreateRodForm,
                                         FilterRodsForm
                                         )
 from ribarite_na_noi.Rods.models import Rod
-from ribarite_na_noi.common.validators import RedirectNotLoggedUsers
+from ribarite_na_noi.common.validators import (RedirectNotLoggedUsers,
+                                               RedirectLoggedUsersUrlTypers,
+                                               )
 
 
 class DisplayRodsView(SortRodsForm, ListView):
@@ -84,7 +86,7 @@ class RodDetailsView(DetailView):
     template_name = 'rod-details.html'
 
 
-class EditRodView(RedirectNotLoggedUsers, UpdateView):
+class EditRodView(RedirectLoggedUsersUrlTypers, UpdateView):
     model = Rod
     fields = ("rod_type",
               "length",
@@ -103,7 +105,7 @@ class EditRodView(RedirectNotLoggedUsers, UpdateView):
     no_permission_redirect_to = 'display_rods'
 
 
-class DeleteRodView(RedirectNotLoggedUsers, DeleteView):
+class DeleteRodView(RedirectLoggedUsersUrlTypers, DeleteView):
     model = Rod
     template_name = 'delete-rod.html'
     success_url = reverse_lazy('display_rods')

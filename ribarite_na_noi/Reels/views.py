@@ -13,7 +13,9 @@ from ribarite_na_noi.Reels.forms import (CreateReelForm,
                                          FilterReelsForm,
                                          )
 from ribarite_na_noi.Reels.models import Reel
-from ribarite_na_noi.common.validators import RedirectNotLoggedUsers
+from ribarite_na_noi.common.validators import (RedirectNotLoggedUsers,
+                                               RedirectLoggedUsersUrlTypers,
+                                               )
 
 
 class DisplayReelsView(ListView):
@@ -84,7 +86,7 @@ class ReelDetailsView(DetailView):
     template_name = 'reel-details.html'
 
 
-class EditReelView(RedirectNotLoggedUsers, UpdateView):
+class EditReelView(RedirectLoggedUsersUrlTypers, UpdateView):
     model = Reel
     fields = [field.name for field in model._meta.get_fields()[1:-3]]
 
@@ -95,7 +97,7 @@ class EditReelView(RedirectNotLoggedUsers, UpdateView):
     no_permission_redirect_to = 'display_reels'
 
 
-class DeleteReelView(RedirectNotLoggedUsers, DeleteView):
+class DeleteReelView(RedirectLoggedUsersUrlTypers, DeleteView):
     model = Reel
     template_name = 'delete-reel.html'
     success_url = reverse_lazy('display_reels')

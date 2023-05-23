@@ -13,7 +13,9 @@ from ribarite_na_noi.Chepareta.forms import (SortCheparetaForm,
                                              FilterCheparetaForm,
                                              )
 from ribarite_na_noi.Chepareta.models import Chepare
-from ribarite_na_noi.common.validators import RedirectNotLoggedUsers
+from ribarite_na_noi.common.validators import (RedirectNotLoggedUsers,
+                                               RedirectLoggedUsersUrlTypers,
+                                               )
 
 
 class DisplayCheparetaView(ListView):
@@ -88,7 +90,7 @@ class ChepareDetailsView(DetailView):
     template_name = 'chepare-details.html'
 
 
-class EditChepareView(RedirectNotLoggedUsers, UpdateView):
+class EditChepareView(RedirectLoggedUsersUrlTypers, UpdateView):
     model = Chepare
     fields = [field.name for field in model._meta.get_fields()[1:-3]]
 
@@ -99,7 +101,7 @@ class EditChepareView(RedirectNotLoggedUsers, UpdateView):
     no_permission_redirect_to = 'display_chepareta'
 
 
-class DeleteChepareView(RedirectNotLoggedUsers, DeleteView):
+class DeleteChepareView(RedirectLoggedUsersUrlTypers, DeleteView):
     model = Chepare
     template_name = 'delete-chepare.html'
     success_url = reverse_lazy('display_chepareta')
