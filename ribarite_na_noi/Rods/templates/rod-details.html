@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
+{% load filters %}
+
 
 {% block title %}
-    {{ rod.name }}
+    {{ rod.rod_name|capfirst }}
 {% endblock %}
 
 
@@ -28,7 +30,7 @@
             <p>Добавено на: {{ rod.created_on }}</p>
             <p>Променено на: {{ rod.updated_on }}</p>
 
-            {% if user.pk == rod.created_by.pk %}
+            {% if user.is_superuser or user|has_group:"staff" or user.pk == rod.created_by.pk %}
 
                 <a href="{% url 'edit_rod' pk=rod.pk %}">
                     <button class="add-button">Промяна</button>

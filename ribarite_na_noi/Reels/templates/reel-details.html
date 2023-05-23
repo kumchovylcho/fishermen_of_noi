@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
+{% load filters %}
 
 {% block title %}
-    {{ reel.model }}
+    {{ reel.model|capfirst }}
 {% endblock %}
 
 
@@ -28,8 +29,7 @@
             <p>Добавено на: {{ reel.created_on }}</p>
             <p>Променено на: {{ reel.updated_on }}</p>
 
-            {% if user.pk == reel.created_by.pk %}
-
+            {% if user.is_superuser or user|has_group:"staff" or user.pk == reel.created_by.pk %}
                 <a href="{% url 'edit_reel' pk=reel.pk %}">
                     <button class="add-button">Промяна</button>
                 </a>

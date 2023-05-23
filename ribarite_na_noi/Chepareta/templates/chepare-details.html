@@ -29,7 +29,7 @@
             <p>Добавено на: {{ chepare.created_on }}</p>
             <p>Променено на: {{ chepare.updated_on }}</p>
 
-            {% if user.pk == chepare.created_by.pk %}
+            {% if user.is_superuser or "staff" in user.groups.all.0.name or user.pk == chepare.created_by.pk %}
                 <a href="{% url 'edit_chepare' pk=chepare.pk %}">
                     <button class="add-button">Промяна</button>
                 </a>
