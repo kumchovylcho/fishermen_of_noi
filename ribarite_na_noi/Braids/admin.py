@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from ribarite_na_noi.Braids.models import Braid
+
+
+@admin.register(Braid)
+class BraidsAdmin(admin.ModelAdmin):
+    pass
