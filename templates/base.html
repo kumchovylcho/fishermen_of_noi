@@ -22,11 +22,11 @@
                 <li><a href="{% url 'display_leads' %}">Олова</a></li>
 
             {% if user.is_authenticated %}
-                <li><a href="{% url 'logout' %}">Sign Out</a></li>
-                <li><a href="#">Profile</a></li>
+                <li><a href="{% url 'logout' %}">Излез</a></li>
+                <li><a href="{% url 'profile' pk=user.pk %}">Профил</a></li>
             {% else %}
-                <li><a href="{% url 'login' %}">Sign in</a></li>
-                <li><a href="{% url 'register' %}">Sign up</a></li>
+                <li><a href="{% url 'login' %}">Влез</a></li>
+                <li><a href="{% url 'register' %}">Регистрация</a></li>
 
             {% endif %}
             </ul>
