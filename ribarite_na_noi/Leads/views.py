@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import (ListView,
                                   CreateView,
@@ -14,8 +13,8 @@ from ribarite_na_noi.Leads.forms import (SortLeadsForm,
                                          )
 
 from ribarite_na_noi.Leads.models import Lead
-from ribarite_na_noi.common.validators import (RedirectNotLoggedUsers,
-                                               RedirectLoggedUsersUrlTypers,
+from ribarite_na_noi.common.validators import (RedirectNotAuthorizedUsers,
+                                               RedirectNotAuthenticatedUsers,
                                                )
 
 
@@ -66,13 +65,12 @@ class DisplayLeadsView(ListView):
         return context
 
 
-class CreateLeadView(RedirectNotLoggedUsers, CreateView):
+class CreateLeadView(RedirectNotAuthenticatedUsers, CreateView):
     form_class = CreateLeadForm
     template_name = 'create-lead.html'
     success_url = reverse_lazy('display_leads')
 
-    user_must_be_logged = True
-    no_permission_redirect_to = 'display_leads'
+    redirect_to = 'display_leads'
 
     def form_valid(self, form):
         user = User.objects.filter(pk=self.request.user.pk).get()
@@ -89,7 +87,7 @@ class LeadDetailsView(DetailView):
     template_name = 'lead-details.html'
 
 
-class EditLeadView(RedirectLoggedUsersUrlTypers, UpdateView):
+class EditLeadView(RedirectNotAuthorizedUsers, UpdateView):
     model = Lead
     fields = [field.name for field in model._meta.get_fields()[1:-3]]
 
@@ -99,11 +97,15 @@ class EditLeadView(RedirectLoggedUsersUrlTypers, UpdateView):
     user_must_be_logged = True
     no_permission_redirect_to = 'display_leads'
 
+    permission_required = 'Leads.change_lead'
 
-class DeleteLeadView(RedirectLoggedUsersUrlTypers, DeleteView):
+
+class DeleteLeadView(RedirectNotAuthorizedUsers, DeleteView):
     model = Lead
     template_name = 'delete-lead.html'
     success_url = reverse_lazy('display_leads')
 
     user_must_be_logged = True
     no_permission_redirect_to = 'display_leads'
+
+    permission_required = 'Leads.delete_lead'
