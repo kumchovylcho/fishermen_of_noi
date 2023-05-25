@@ -30,6 +30,9 @@
                 <a href="{% url 'edit_lead' pk=lead.pk %}">
                     <button class="add-button">Промяна</button>
                 </a>
+            {% endif %}
+
+            {% if user.is_superuser or user.pk == lead.created_by.pk %}
                 <a href="{% url 'delete_lead' pk=lead.pk %}">
                     <button class="delete-button">Изтрий</button>
                 </a>
