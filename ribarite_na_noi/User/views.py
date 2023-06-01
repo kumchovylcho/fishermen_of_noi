@@ -26,9 +26,7 @@ from ribarite_na_noi.User.forms import (SignUpForm,
                                         ChangePasswordForm,
                                         ChangeUsernameForm,
                                         )
-from ribarite_na_noi.common.validators import (RedirectNotLoggedUsers,
-                                               RedirectLoggedUsersUrlTypers,
-                                               )
+from ribarite_na_noi.common.validators import RedirectNotAuthenticatedUsers
 
 
 class UserLoginView(LoginView):
@@ -37,13 +35,19 @@ class UserLoginView(LoginView):
     redirect_authenticated_user = True
 
 
-class UserRegisterView(RedirectNotLoggedUsers, CreateView):
+class UserRegisterView(CreateView):
     form_class = SignUpForm
     template_name = 'sign-up.html'
     success_url = reverse_lazy('welcome-page')
 
-    user_must_be_logged = False
-    no_permission_redirect_to = 'home'
+    is_authenticated_redirect_to = 'home'
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        if user.is_authenticated:
+            return redirect(self.is_authenticated_redirect_to)
+
+        return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -58,12 +62,19 @@ class LogOut(LogoutView):
     pass
 
 
-class ProfileView(RedirectLoggedUsersUrlTypers, DetailView):
+class ProfileView(RedirectNotAuthenticatedUsers, DetailView):
     model = User
     template_name = 'profile.html'
 
-    user_must_be_logged = True
-    no_permission_redirect_to = 'login'
+    redirect_to = 'login'
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+
+        if user.pk != self.get_object().pk:
+            return redirect(self.redirect_to)
+
+        return super().get(request, *args, **kwargs)
 
     def get_number_of_created_models(self):
         result = {}
@@ -89,24 +100,24 @@ class ProfileView(RedirectLoggedUsersUrlTypers, DetailView):
         return context
 
 
-class ChangePassword(RedirectNotLoggedUsers, PasswordChangeView):
+class ChangePassword(RedirectNotAuthenticatedUsers, PasswordChangeView):
     form_class = ChangePasswordForm
     success_url = reverse_lazy("successful_password_change")
     template_name = 'change-password.html'
 
-    no_permission_redirect_to = 'login'
+    redirect_to = 'login'
 
     def get(self, request, *args, **kwargs):
+        user = self.request.user
 
-        if kwargs['pk'] != self.request.user.pk:
-            return redirect('profile', pk=self.request.user.pk)
+        if kwargs['pk'] != user.pk:
+            return redirect('profile', pk=user.pk)
 
         return super().get(request, *args, **kwargs)
 
 
-class SuccessPasswordChange(RedirectNotLoggedUsers, PasswordChangeDoneView):
+class SuccessPasswordChange(RedirectNotAuthenticatedUsers, PasswordChangeDoneView):
     template_name = 'successful-page.html'
-    no_permission_redirect_to = 'login'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -115,12 +126,12 @@ class SuccessPasswordChange(RedirectNotLoggedUsers, PasswordChangeDoneView):
         return context
 
 
-class ChangeUsername(RedirectNotLoggedUsers, FormView):
+class ChangeUsername(RedirectNotAuthenticatedUsers, FormView):
     form_class = ChangeUsernameForm
     template_name = 'change-username.html'
     success_url = reverse_lazy('successful_username_change')
 
-    no_permission_redirect_to = 'login'
+    redirect_to = 'login'
 
     def get(self, request, *args, **kwargs):
         if kwargs['pk'] != self.request.user.pk:
@@ -136,7 +147,7 @@ class ChangeUsername(RedirectNotLoggedUsers, FormView):
         return super().form_valid(form)
 
 
-class SuccessUsernameChange(RedirectNotLoggedUsers, TemplateView):
+class SuccessUsernameChange(RedirectNotAuthenticatedUsers, TemplateView):
     template_name = 'successful-page.html'
     no_permission_redirect_to = 'login'
 
@@ -147,10 +158,9 @@ class SuccessUsernameChange(RedirectNotLoggedUsers, TemplateView):
         return context
 
 
-class DeleteUser(ProfileView, RedirectNotLoggedUsers, DeleteView):
+class DeleteUser(ProfileView, RedirectNotAuthenticatedUsers, DeleteView):
     model = User
     template_name = 'delete-user.html'
-    no_permission_redirect_to = 'login'
     success_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
