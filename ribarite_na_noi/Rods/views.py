@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import (CreateView,
                                   ListView,
@@ -13,8 +12,8 @@ from ribarite_na_noi.Rods.forms import (CreateRodForm,
                                         FilterRodsForm
                                         )
 from ribarite_na_noi.Rods.models import Rod
-from ribarite_na_noi.common.validators import (RedirectNotLoggedUsers,
-                                               RedirectLoggedUsersUrlTypers,
+from ribarite_na_noi.common.validators import (RedirectNotAuthorizedUsers,
+                                               RedirectNotAuthenticatedUsers,
                                                )
 
 
@@ -63,13 +62,12 @@ class DisplayRodsView(SortRodsForm, ListView):
         return context
 
 
-class CreateRodView(RedirectNotLoggedUsers, CreateView):
+class CreateRodView(RedirectNotAuthenticatedUsers, CreateView):
     form_class = CreateRodForm
     template_name = 'create-rod.html'
     success_url = reverse_lazy('display_rods')
 
-    user_must_be_logged = True
-    no_permission_redirect_to = 'display_rods'
+    redirect_to = 'display_rods'
 
     def form_valid(self, form):
         user = User.objects.filter(pk=self.request.user.pk).get()
@@ -86,7 +84,7 @@ class RodDetailsView(DetailView):
     template_name = 'rod-details.html'
 
 
-class EditRodView(RedirectLoggedUsersUrlTypers, UpdateView):
+class EditRodView(RedirectNotAuthorizedUsers, UpdateView):
     model = Rod
     fields = ("rod_type",
               "length",
@@ -104,11 +102,15 @@ class EditRodView(RedirectLoggedUsersUrlTypers, UpdateView):
     user_must_be_logged = True
     no_permission_redirect_to = 'display_rods'
 
+    permission_required = "Rods.change_rod"
 
-class DeleteRodView(RedirectLoggedUsersUrlTypers, DeleteView):
+
+class DeleteRodView(RedirectNotAuthorizedUsers, DeleteView):
     model = Rod
     template_name = 'delete-rod.html'
     success_url = reverse_lazy('display_rods')
 
     user_must_be_logged = True
     no_permission_redirect_to = 'display_rods'
+
+    permission_required = "Rods.delete_rod"
