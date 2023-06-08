@@ -31,10 +31,12 @@
             <p>Променено на: {{ rod.updated_on }}</p>
 
             {% if user.is_superuser or user|has_group:"staff" or user.pk == rod.created_by.pk %}
-
                 <a href="{% url 'edit_rod' pk=rod.pk %}">
                     <button class="add-button">Промяна</button>
                 </a>
+            {% endif %}
+
+            {% if user.is_superuser or user.pk == rod.created_by.pk %}
                 <a href="{% url 'delete_rod' pk=rod.pk %}">
                     <button class="delete-button">Изтрий</button>
                 </a>

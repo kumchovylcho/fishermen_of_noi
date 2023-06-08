@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load filters %}
 
 {% block title %}
     {{ braid.name }}
@@ -31,10 +32,13 @@
             <p>Добавено на: {{ braid.created_on }}</p>
             <p>Променено на: {{ braid.updated_on }}</p>
 
-            {% if user.is_superuser or "staff" in user.groups.all.0.name or user.pk == braid.created_by.pk %}
+            {% if user.is_superuser or user|has_group:"staff" or user.pk == braid.created_by.pk %}
                 <a href="{% url 'edit_braid' pk=braid.pk %}">
                     <button class="add-button">Промяна</button>
                 </a>
+            {% endif %}
+
+            {% if user.is_superuser or user.pk == braid.created_by.pk %}
                 <a href="{% url 'delete_braid' pk=braid.pk %}">
                     <button class="delete-button">Изтрий</button>
                 </a>

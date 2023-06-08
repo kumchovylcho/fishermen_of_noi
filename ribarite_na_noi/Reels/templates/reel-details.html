@@ -33,6 +33,9 @@
                 <a href="{% url 'edit_reel' pk=reel.pk %}">
                     <button class="add-button">Промяна</button>
                 </a>
+            {% endif %}
+
+            {% if user.is_superuser or user.pk == reel.created_by.pk %}
                 <a href="{% url 'delete_reel' pk=reel.pk %}">
                     <button class="delete-button">Изтрий</button>
                 </a>

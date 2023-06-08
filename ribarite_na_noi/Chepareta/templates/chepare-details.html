@@ -33,6 +33,9 @@
                 <a href="{% url 'edit_chepare' pk=chepare.pk %}">
                     <button class="add-button">Промяна</button>
                 </a>
+            {% endif %}
+
+            {% if user.is_superuser or user.pk == chepare.created_by.pk %}
                 <a href="{% url 'delete_chepare' pk=chepare.pk %}">
                     <button class="delete-button">Изтрий</button>
                 </a>
