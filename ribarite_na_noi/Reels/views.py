@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import (ListView,
                                   CreateView,
@@ -13,8 +12,8 @@ from ribarite_na_noi.Reels.forms import (CreateReelForm,
                                          FilterReelsForm,
                                          )
 from ribarite_na_noi.Reels.models import Reel
-from ribarite_na_noi.common.validators import (RedirectNotLoggedUsers,
-                                               RedirectLoggedUsersUrlTypers,
+from ribarite_na_noi.common.validators import (RedirectNotAuthorizedUsers,
+                                               RedirectNotAuthenticatedUsers,
                                                )
 
 
@@ -63,13 +62,12 @@ class DisplayReelsView(ListView):
         return context
 
 
-class CreateReelView(RedirectNotLoggedUsers, CreateView):
+class CreateReelView(RedirectNotAuthenticatedUsers, CreateView):
     form_class = CreateReelForm
     template_name = 'create-reel.html'
     success_url = reverse_lazy('display_reels')
 
-    user_must_be_logged = True
-    no_permission_redirect_to = 'display_reels'
+    redirect_to = 'display_reels'
 
     def form_valid(self, form):
         user = User.objects.filter(pk=self.request.user.pk).get()
@@ -86,22 +84,24 @@ class ReelDetailsView(DetailView):
     template_name = 'reel-details.html'
 
 
-class EditReelView(RedirectLoggedUsersUrlTypers, UpdateView):
+class EditReelView(RedirectNotAuthorizedUsers, UpdateView):
     model = Reel
     fields = [field.name for field in model._meta.get_fields()[1:-3]]
 
     template_name = 'edit-reel.html'
     success_url = reverse_lazy('display_reels')
 
-    user_must_be_logged = True
     no_permission_redirect_to = 'display_reels'
 
+    permission_required = "Reels.change_reel"
 
-class DeleteReelView(RedirectLoggedUsersUrlTypers, DeleteView):
+
+class DeleteReelView(RedirectNotAuthorizedUsers, DeleteView):
     model = Reel
     template_name = 'delete-reel.html'
     success_url = reverse_lazy('display_reels')
 
-    user_must_be_logged = True
     no_permission_redirect_to = 'display_reels'
+
+    permission_required = "Reels.delete_reel"
 
