@@ -23,17 +23,19 @@
                 <p class="card-title">{{ item_name }}: {{ added_posts }}</p>
             {% endfor %}
 
-            <a href="{% url 'change_password' pk=user.pk %}">
-                <button class="delete-button">Смени парола</button>
-            </a>
+            {% if profile == user_requesting.pk or user_requesting.is_superuser %}
+                <a href="{% url 'change_password' pk=user.pk %}">
+                    <button class="delete-button">Смени парола</button>
+                </a>
 
-            <a href="{% url 'change_username' pk=user.pk %}">
-                <button class="delete-button">Смени никнейм</button>
-            </a>
+                <a href="{% url 'change_username' pk=user.pk %}">
+                    <button class="delete-button">Смени никнейм</button>
+                </a>
 
-            <a href="{% url 'delete_user' pk=user.pk %}">
-                <button class="delete-button">Изтрий профил</button>
-            </a>
+                <a href="{% url 'delete_user' pk=user.pk %}">
+                    <button class="delete-button">Изтрий профил</button>
+                </a>
+            {% endif %}
 
         </div>
 
