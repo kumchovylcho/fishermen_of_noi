@@ -497,7 +497,7 @@ class TestCreateLead(TestCase):
                          lead.grams
                          )
 
-    def test_user_tries_to_reach_create_rod_page_when_not_logged_in(self):
+    def test_user_tries_to_reach_create_lead_page_when_not_logged_in(self):
         self.client.logout()
         response = self.client.get(self.create_lead_url)
 
