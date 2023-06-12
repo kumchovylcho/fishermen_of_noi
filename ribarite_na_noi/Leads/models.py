@@ -82,3 +82,5 @@ class Lead(models.Model):
                                    on_delete=models.CASCADE,
                                    )
 
+    def __str__(self):
+        return f"{self.lead_type} {self.grams}grams"

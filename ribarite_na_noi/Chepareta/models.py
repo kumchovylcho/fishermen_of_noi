@@ -155,3 +155,6 @@ class Chepare(models.Model):
     created_by = models.ForeignKey(User,
                                    on_delete=models.CASCADE,
                                    )
+
+    def __str__(self):
+        return f"{self.type} {self.semi_main_line_thickness}/{self.main_line_thickness}"
