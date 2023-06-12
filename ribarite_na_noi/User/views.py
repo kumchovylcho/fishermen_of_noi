@@ -71,7 +71,7 @@ class ProfileView(RedirectNotAuthenticatedUsers, DetailView):
     def get(self, request, *args, **kwargs):
         user = self.request.user
 
-        if user.pk != self.get_object().pk:
+        if user.pk != self.get_object().pk and not user.is_superuser:
             return redirect(self.redirect_to)
 
         return super().get(request, *args, **kwargs)
@@ -96,6 +96,8 @@ class ProfileView(RedirectNotAuthenticatedUsers, DetailView):
         context = super().get_context_data(**kwargs)
         context['all_posts'] = self.get_number_of_created_models()
         context['created_items'] = sum(context['all_posts'].values())
+        context['profile'] = self.get_object().pk
+        context['user_requesting'] = self.request.user
 
         return context
 
