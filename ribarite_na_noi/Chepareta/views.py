@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import (ListView,
                                   CreateView,
@@ -13,8 +12,8 @@ from ribarite_na_noi.Chepareta.forms import (SortCheparetaForm,
                                              FilterCheparetaForm,
                                              )
 from ribarite_na_noi.Chepareta.models import Chepare
-from ribarite_na_noi.common.validators import (RedirectNotLoggedUsers,
-                                               RedirectLoggedUsersUrlTypers,
+from ribarite_na_noi.common.validators import (RedirectNotAuthorizedUsers,
+                                               RedirectNotAuthenticatedUsers,
                                                )
 
 
@@ -67,13 +66,12 @@ class DisplayCheparetaView(ListView):
         return context
 
 
-class CreateChepareView(RedirectNotLoggedUsers, CreateView):
+class CreateChepareView(RedirectNotAuthenticatedUsers, CreateView):
     form_class = CreateChepareForm
     template_name = 'create-chepare.html'
     success_url = reverse_lazy('display_chepareta')
 
-    user_must_be_logged = True
-    no_permission_redirect_to = 'display_chepareta'
+    redirect_to = 'display_chepareta'
 
     def form_valid(self, form):
         user = User.objects.filter(pk=self.request.user.pk).get()
@@ -90,21 +88,23 @@ class ChepareDetailsView(DetailView):
     template_name = 'chepare-details.html'
 
 
-class EditChepareView(RedirectLoggedUsersUrlTypers, UpdateView):
+class EditChepareView(RedirectNotAuthorizedUsers, UpdateView):
     model = Chepare
     fields = [field.name for field in model._meta.get_fields()[1:-3]]
 
     template_name = 'edit-chepare.html'
     success_url = reverse_lazy('display_chepareta')
 
-    user_must_be_logged = True
     no_permission_redirect_to = 'display_chepareta'
 
+    permission_required = "Chepareta.change_chepare"
 
-class DeleteChepareView(RedirectLoggedUsersUrlTypers, DeleteView):
+
+class DeleteChepareView(RedirectNotAuthorizedUsers, DeleteView):
     model = Chepare
     template_name = 'delete-chepare.html'
     success_url = reverse_lazy('display_chepareta')
 
-    user_must_be_logged = True
     no_permission_redirect_to = 'display_chepareta'
+
+    permission_required = "Chepareta.delete_chepare"
