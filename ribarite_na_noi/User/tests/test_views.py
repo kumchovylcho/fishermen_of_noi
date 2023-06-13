@@ -212,7 +212,7 @@ class TestProfileView(TestCase):
         response = self.client.get(self.profile_view_url)
 
         self.assertEqual(response.status_code,
-                         302
+                         200
                          )
 
         self.assertNotEqual(response.wsgi_request.user.pk,
