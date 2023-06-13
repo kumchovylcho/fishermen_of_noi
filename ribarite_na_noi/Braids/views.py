@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import (ListView,
                                   CreateView,
@@ -13,8 +12,8 @@ from ribarite_na_noi.Braids.forms import (SortBraidsForm,
                                           FilterBraidsForm,
                                           )
 from ribarite_na_noi.Braids.models import Braid
-from ribarite_na_noi.common.validators import (RedirectNotLoggedUsers,
-                                               RedirectLoggedUsersUrlTypers,
+from ribarite_na_noi.common.validators import (RedirectNotAuthorizedUsers,
+                                               RedirectNotAuthenticatedUsers,
                                                )
 
 
@@ -66,13 +65,12 @@ class DisplayBraidsView(ListView):
         return context
 
 
-class CreateBraidView(RedirectNotLoggedUsers, CreateView):
+class CreateBraidView(RedirectNotAuthenticatedUsers, CreateView):
     form_class = CreateBraidForm
     template_name = 'create-braid.html'
     success_url = reverse_lazy('display_braids')
 
-    user_must_be_logged = True
-    no_permission_redirect_to = 'display_braids'
+    redirect_to = 'display_braids'
 
     def form_valid(self, form):
         user = User.objects.filter(pk=self.request.user.pk).get()
@@ -89,21 +87,23 @@ class BraidDetailsView(DetailView):
     template_name = 'braid-details.html'
 
 
-class EditBraidView(RedirectLoggedUsersUrlTypers, UpdateView):
+class EditBraidView(RedirectNotAuthorizedUsers, UpdateView):
     model = Braid
     fields = [field.name for field in model._meta.get_fields()[1:-3]]
 
     template_name = 'edit-braid.html'
     success_url = reverse_lazy('display_braids')
 
-    user_must_be_logged = True
     no_permission_redirect_to = 'display_braids'
 
+    permission_required = "Braids.change_braid"
 
-class DeleteBraidView(RedirectLoggedUsersUrlTypers, DeleteView):
+
+class DeleteBraidView(RedirectNotAuthorizedUsers, DeleteView):
     model = Braid
     template_name = 'delete-braid.html'
     success_url = reverse_lazy('display_braids')
 
-    user_must_be_logged = True
     no_permission_redirect_to = 'display_braids'
+
+    permission_required = "Braids.delete_braid"
