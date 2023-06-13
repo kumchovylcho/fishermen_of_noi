@@ -68,14 +68,6 @@ class ProfileView(RedirectNotAuthenticatedUsers, DetailView):
 
     redirect_to = 'login'
 
-    def get(self, request, *args, **kwargs):
-        user = self.request.user
-
-        if user.pk != self.get_object().pk and not user.is_superuser:
-            return redirect(self.redirect_to)
-
-        return super().get(request, *args, **kwargs)
-
     def get_number_of_created_models(self):
         result = {}
 
@@ -97,7 +89,6 @@ class ProfileView(RedirectNotAuthenticatedUsers, DetailView):
         context['all_posts'] = self.get_number_of_created_models()
         context['created_items'] = sum(context['all_posts'].values())
         context['profile'] = self.get_object().pk
-        context['user_requesting'] = self.request.user
 
         return context
 
@@ -136,8 +127,10 @@ class ChangeUsername(RedirectNotAuthenticatedUsers, FormView):
     redirect_to = 'login'
 
     def get(self, request, *args, **kwargs):
-        if kwargs['pk'] != self.request.user.pk:
-            return redirect('profile', pk=self.request.user.pk)
+        user = self.request.user
+
+        if kwargs['pk'] != user.pk:
+            return redirect('profile', pk=user.pk)
 
         return super().get(request, *args, **kwargs)
 
@@ -164,6 +157,14 @@ class DeleteUser(ProfileView, RedirectNotAuthenticatedUsers, DeleteView):
     model = User
     template_name = 'delete-user.html'
     success_url = reverse_lazy('home')
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+
+        if user.pk != self.get_object().pk:
+            return redirect(self.redirect_to)
+
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
