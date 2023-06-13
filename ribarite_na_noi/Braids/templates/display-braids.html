@@ -57,7 +57,9 @@
                                 {% endif %}
 
                                 <h6 class="card-subtitle mb-2">Дължина: {{ braid.length }}м. </h6>
-                                <h6 class="card-text">Добавено от: {{ braid.created_by.username|capfirst }}</h6>
+                                <h6 class="card-text">Добавено от:
+                                    <a href="{% url 'profile' pk=braid.created_by.pk %}">{{ braid.created_by.username|capfirst }}</a>
+                                </h6>
 
 
                                 <a href="{% url 'braid_details' pk=braid.pk %}">

@@ -49,7 +49,9 @@
                                 <h5 class="card-title">Тегло: {{ lead.grams }}гр.</h5>
                                 <h6 class="card-subtitle mb-2">Цена: {{ lead.price|floatformat:2 }}лв.</h6>
 
-                                <h6 class="card-text">Добавено от: {{ lead.created_by.username|capfirst }}</h6>
+                                <h6 class="card-text">Добавено от:
+                                    <a href="{% url 'profile' pk=lead.created_by.pk %}">{{ lead.created_by.username|capfirst }}</a>
+                                </h6>
 
                                 <a href="{% url 'lead_details' pk=lead.pk %}">
                                     {% if user.is_superuser or user|has_group:"staff" or user.pk == lead.created_by.pk %}

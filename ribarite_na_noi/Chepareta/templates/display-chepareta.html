@@ -54,7 +54,9 @@
                                     / {{ chepare.semi_main_line_thickness|floatformat:2 }}</h6>
                                 <h6 class="card-subtitle mb-2">Цена: {{ chepare.price|floatformat:2 }}лв.</h6>
 
-                                <h6 class="card-text">Добавено от: {{ chepare.created_by.username|capfirst }}</h6>
+                                <h6 class="card-text">Добавено от:
+                                    <a href="{% url 'profile' pk=chepare.created_by.pk %}">{{ chepare.created_by.username|capfirst }}</a>
+                                </h6>
 
 
                                 <a href="{% url 'chepare_details' pk=chepare.pk %}">

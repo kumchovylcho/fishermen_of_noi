@@ -51,8 +51,10 @@
                                 <h6 class="card-text">Модел: {{ rod.rod_name|upper }}</h6>
                                 <h6 class="card-text">Цена: {{ rod.price|floatformat:2 }} лв.</h6>
                                 <h6 class="card-text">Акция: {{ rod.action }} гр.</h6>
-                                <p class="card-text">Добавено от: {{ rod.created_by.username|capfirst }}</p>
 
+                                <p class="card-text">Добавено от:
+                                    <a href="{% url 'profile' pk=rod.created_by.pk %}">{{ rod.created_by.username|capfirst }}</a>
+                                </p>
 
                                 <a href="{% url 'rod_details' pk=rod.pk %}">
                                     {% if user.is_superuser or user|has_group:"staff" or user.pk == rod.created_by.pk %}
