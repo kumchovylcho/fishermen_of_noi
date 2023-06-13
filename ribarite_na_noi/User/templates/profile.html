@@ -23,7 +23,7 @@
                 <p class="card-title">{{ item_name }}: {{ added_posts }}</p>
             {% endfor %}
 
-            {% if profile == user_requesting.pk or user_requesting.is_superuser %}
+            {% if profile == request.user.pk %}
                 <a href="{% url 'change_password' pk=user.pk %}">
                     <button class="delete-button">Смени парола</button>
                 </a>

@@ -23,7 +23,8 @@
 
             {% if user.is_authenticated %}
                 <li><a href="{% url 'logout' %}">Излез</a></li>
-                <li><a href="{% url 'profile' pk=user.pk %}">Профил</a></li>
+                <li><a href="{% url 'profile' pk=request.user.pk %}">Профил</a></li>
+
             {% else %}
                 <li><a href="{% url 'login' %}">Влез</a></li>
                 <li><a href="{% url 'register' %}">Регистрация</a></li>
