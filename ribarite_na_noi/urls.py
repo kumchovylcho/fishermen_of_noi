@@ -23,3 +23,4 @@ urlpatterns += static(settings.STATIC_URL,
                       )
 
 handler404 = PageNotFound.as_view()
+handler500 = PageNotFound.as_view()
