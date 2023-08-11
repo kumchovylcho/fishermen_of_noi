@@ -135,6 +135,7 @@ class ChangeUsername(RedirectNotAuthenticatedUsers, FormView):
         return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
+        # if you enter someone else's old username
         if self.request.user.username != form.cleaned_data.get("old_username"):
             return redirect('profile', pk=self.request.user.pk)
 
